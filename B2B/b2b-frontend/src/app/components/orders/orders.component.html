@@ -1,0 +1,48 @@
+<div class="container mt-5">
+    <h2>Sales Orders</h2>
+    
+    <form (submit)="searchOrders()" class="mb-3">
+      <div class="row">
+        <div class="col-md-3 mt-2">
+          <input type="text" [(ngModel)]="filters.name" placeholder="Name" class="form-control" [ngModelOptions]="{standalone: true}"/>
+        </div>
+        <div class="col-md-3 mt-2">
+          <input type="text" [(ngModel)]="filters.email" placeholder="Email" class="form-control" [ngModelOptions]="{standalone: true}"/>
+        </div>
+        <div class="col-md-3 mt-2">
+          <input type="text" [(ngModel)]="filters.mobileNumber" placeholder="Mobile Number" class="form-control" [ngModelOptions]="{standalone: true}"/>
+        </div>
+        <div class="col-md-3 mt-2">
+          <input type="text" [(ngModel)]="filters.status" placeholder="Status" class="form-control" [ngModelOptions]="{standalone: true}"/>
+        </div>
+        <div class="col-md-3 mt-2">
+          <input type="date" [(ngModel)]="filters.orderDate" placeholder="Order Date" class="form-control" [ngModelOptions]="{standalone: true}"/>
+        </div>
+        <div class="col-md-3 mt-2">
+          <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+      </div>
+    </form>
+    
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Mobile</th>
+          <th>Status</th>
+          <th>Order Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let order of salesOrders">
+          <td>{{ order.name }}</td>
+          <td>{{ order.email }}</td>
+          <td>{{ order.mobileNumber }}</td>
+          <td>{{ order.status }}</td>
+          <td>{{ order.orderDate | date:'short' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

@@ -1,0 +1,61 @@
+<div class="container mt-5">
+  <h2>Checkout</h2>
+  <form (ngSubmit)="checkout()" #checkoutForm="ngForm">
+    <div class="form-group mb-3">
+      <label for="name">Name</label>
+      <input 
+        type="text" 
+        id="name" 
+        name="name" 
+        [(ngModel)]="orderObj.name" 
+        class="form-control" 
+        required 
+        #name="ngModel"
+      />
+      <div *ngIf="name.invalid && name.touched" class="text-danger">
+        Name is required.
+      </div>
+    </div>
+
+    <div class="form-group mb-3">
+      <label for="email">Email</label>
+      <input 
+        type="email" 
+        id="email" 
+        name="email" 
+        [(ngModel)]="orderObj.email" 
+        class="form-control" 
+        required 
+        #email="ngModel"
+      />
+      <div *ngIf="email.invalid && email.touched" class="text-danger">
+        A valid email is required.
+      </div>
+    </div>
+
+    <div class="form-group mb-3">
+      <label for="mobileNumber">Mobile</label>
+      <input 
+        type="tel" 
+        id="mobileNumber" 
+        name="mobileNumber" 
+        [(ngModel)]="orderObj.mobileNumber" 
+        class="form-control" 
+        required 
+        #mobileNumber="ngModel"
+        pattern="[0-9]{10}"
+      />
+      <div *ngIf="mobileNumber.invalid && mobileNumber.touched" class="text-danger">
+        Mobile number must be 10 digits.
+      </div>
+    </div>
+
+
+    <button 
+      type="submit" 
+      class="btn btn-primary" 
+      [disabled]="checkoutForm.invalid">
+      Place Order
+    </button>
+  </form>
+</div>

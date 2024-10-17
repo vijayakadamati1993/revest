@@ -1,0 +1,32 @@
+<div class="container my-5">
+  <form class="form-inline my-2 my-lg-0 w-25">
+    <input 
+      class="form-control mr-sm-2" 
+      type="search" 
+      [(ngModel)]="searchTerm" 
+      placeholder="Search by Product Name" 
+      aria-label="Search" 
+      [ngModelOptions]="{ standalone: true }"
+      (input)="filterProducts()"
+    />
+  </form>&nbsp;
+
+  <div class="row">
+    <div class="col-md-3" *ngFor="let product of filteredProducts">
+      <div class="card w-100">
+        <img [src]="product.image" class="card-img-top" [alt]="product.name" width="200" height="200" />
+        <div class="card-body">
+          <h5 class="card-title">{{ product.name }}</h5>
+          <p class="card-text">₹{{ product.price }}</p>
+          <button class="btn btn-primary" (click)="addToCart(product)">
+            Add to Cart
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <li *ngIf="filteredProducts.length === 0">
+      No matching products found.
+    </li>
+  </div>
+</div>

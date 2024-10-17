@@ -1,0 +1,23 @@
+<div class="container mt-5">
+    <h2>Your Cart</h2>
+    <div *ngIf="cartItems.length > 0; else emptyCart">
+      <div *ngFor="let item of cartItems" class="row mb-3">
+        <div class="col-md-8">
+          <h5>{{ item.name }}</h5>
+          <p>Quantity: {{ item.quantity }}</p>
+        </div>
+        <div class="col-md-2">₹{{ item.price * item.quantity }}</div>
+        <div class="col-md-2">
+          <button class="btn btn-danger" (click)="removeFromCart(item.id)">
+            Remove
+          </button>
+        </div>
+      </div>
+      <h3>Total: ₹{{ totalPrice }}</h3>
+      <button class="btn btn-success" (click)="proceedToCheckout()">Proceed to Checkout</button>
+    </div>
+    <ng-template #emptyCart>
+      <p>Your cart is empty. <a routerLink="/product">Go shopping</a>.</p>
+    </ng-template>
+  </div>
+  
