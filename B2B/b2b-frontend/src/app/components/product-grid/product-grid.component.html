@@ -11,9 +11,9 @@
     />
   </form>&nbsp;
 
-  <div class="row">
-    <div class="col-md-3" *ngFor="let product of filteredProducts">
-      <div class="card w-100">
+  <div class="row g-2">
+    <div class="col-md-3 mb-4 d-flex align-items-stretch" *ngFor="let product of filteredProducts">
+      <div class="card w-100 h-100">
         <img [src]="product.image" class="card-img-top" [alt]="product.name" width="200" height="200" />
         <div class="card-body">
           <h5 class="card-title">{{ product.name }}</h5>

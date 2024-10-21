@@ -82,21 +82,52 @@ app.delete('/deleteProduct/:id', async (req, res) => {
 app.post('/createOrder', async (req, res) => {
   try {
     const { products, ...orderData } = req.body;
-    const order = await SalesOrder.create(orderData);
-    console.log(order);
-
-    await order.addProducts(products);
-    await axios.post('https://third-party-api.com/salesOrder', order, {
-      headers: {
-        Authorization: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
-      },
+    const salesOrder = await SalesOrder.create(orderData);
+    const productInstances = await Product.findAll({
+      where: { id: products },
     });
-
-    res.status(201).json({order});
+    await salesOrder.addProducts(productInstances);
+    const salesOrderWithProducts = await SalesOrder.findOne({
+      where: { id: salesOrder.id },
+      include: Product,
+    });
+ 
+    console.log('Order created successfully:', salesOrderWithProducts);
+    pushToThirdPartyAPI(salesOrder)
+      .then(() => console.log('Pushed to third-party API successfully'))
+      .catch((err) => console.error('Failed to push to third-party API:', err));
+    res.status(201).json({ order: salesOrderWithProducts });
   } catch (error) {
+    console.error('Error creating order:', error);
     res.status(500).json({ error: error.message });
   }
 });
+ 
+ 
+async function pushToThirdPartyAPI(order) {
+  const thirdPartyApiUrl = 'https://third-party-api.com/salesOrder';
+  const headers = {
+    Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
+    'Content-Type': 'application/json',
+  };
+ 
+  const payload = {
+    name: order.name,
+    email: order.email,
+    mobileNumber: order.mobileNumber,
+    status: order.status,
+    orderDate: order.orderDate,
+    products: order.products.map((product) => product.id),
+  };
+ 
+  try {
+    const response = await axios.post(thirdPartyApiUrl, payload, { headers });
+    console.log('Third-party API response:', response.data);
+  } catch (error) {
+    console.error('Error pushing to third-party API:', error.message);
+    throw error;
+  }
+}
 
 app.get('/getSales', async (req, res) => {
   const { name, email, mobileNumber, status, orderDate } = req.query;
